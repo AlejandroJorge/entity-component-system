@@ -2,7 +2,11 @@
 #define COMPONENT_TYPES
 
 typedef void *Component;
-typedef enum { CT_POSITION, CT_TOTAL_UCOMPONENT_TYPES } UComponentType;
-typedef enum { CT_RECTANGLE_SHAPE, CT_TOTAL_DCOMPONENT_TYPES } DComponentType;
+typedef enum {
+  UCT_POSITION,
+  UCT_SIZE,
+  UCT_TOTAL_UCOMPONENT_TYPES
+} UComponentType;
+typedef enum { DCT_RECTANGLE_SHAPE, DCT_TOTAL_DCOMPONENT_TYPES } DComponentType;
 
 #endif // COMPONENT_TYPES

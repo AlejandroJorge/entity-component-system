@@ -7,16 +7,14 @@
 
 /*
  * [TODO] Entity ID assignment
- * [TODO] UComponents mux
- * [TODO] DComponents mux
  * */
 
 Entity *Entity_Create() {
   Entity *e = MemAlloc(sizeof(Entity));
-  for (unsigned int i = 0; i < CT_TOTAL_UCOMPONENT_TYPES; i++) {
+  for (UComponentType i = 0; i < UCT_TOTAL_UCOMPONENT_TYPES; i++) {
     e->UComponents[i] = NULL;
   }
-  for (unsigned int i = 0; i < CT_TOTAL_DCOMPONENT_TYPES; i++) {
+  for (DComponentType i = 0; i < DCT_TOTAL_DCOMPONENT_TYPES; i++) {
     e->DComponents[i] = NULL;
   }
 
@@ -41,23 +39,25 @@ void Entity_AppendDComponent(Entity *e, Component c, DComponentType t) {
   e->DComponents[t] = c;
 }
 void Entity_Update(Entity *e) {
-  for (UComponentType i = 0; i < CT_TOTAL_UCOMPONENT_TYPES; i++) {
+  for (UComponentType i = 0; i < UCT_TOTAL_UCOMPONENT_TYPES; i++) {
     switch (i) {
-    case CT_POSITION:
+    case UCT_POSITION:
       UC_Position_Update(e);
       break;
-    case CT_TOTAL_UCOMPONENT_TYPES:
+    case UCT_SIZE:
+      UC_Size_Update(e);
+    case UCT_TOTAL_UCOMPONENT_TYPES:
       break;
     }
   }
 }
 void Entity_Draw(Entity *e) {
-  for (DComponentType i = 0; i < CT_TOTAL_DCOMPONENT_TYPES; i++) {
+  for (DComponentType i = 0; i < DCT_TOTAL_DCOMPONENT_TYPES; i++) {
     switch (i) {
-    case CT_RECTANGLE_SHAPE:
+    case DCT_RECTANGLE_SHAPE:
       DC_RectangleShape_Draw(e);
       break;
-    case CT_TOTAL_DCOMPONENT_TYPES:
+    case DCT_TOTAL_DCOMPONENT_TYPES:
       break;
     }
   }

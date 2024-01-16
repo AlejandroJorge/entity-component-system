@@ -7,11 +7,12 @@
 void MockEntitySystem(EntitySystem *es) {
   Entity *mockEntity = Entity_Create();
   UC_Position *positionComponent = UC_Position_Create((Vector2){150, 50});
-  DC_RectangleShape *rectangleShapeComponent =
-      DC_RectangleShape_Create((Vector2){60, 60}, BLUE);
-  Entity_AppendUComponent(mockEntity, positionComponent, CT_POSITION);
+  UC_Size *sizeComponent = UC_Size_Create((Vector2){80, 80});
+  DC_RectangleShape *rectangleShapeComponent = DC_RectangleShape_Create(BLUE);
+  Entity_AppendUComponent(mockEntity, positionComponent, UCT_POSITION);
+  Entity_AppendUComponent(mockEntity, sizeComponent, UCT_SIZE);
   Entity_AppendDComponent(mockEntity, rectangleShapeComponent,
-                          CT_RECTANGLE_SHAPE);
+                          DCT_RECTANGLE_SHAPE);
   EntitySystem_AppendEntity(es, mockEntity);
 }
 
@@ -26,6 +27,7 @@ int main(int argc, char *argv[]) {
   while (!WindowShouldClose()) {
     EntitySystem_Update(es);
     BeginDrawing();
+    DrawFPS(15, 15);
     ClearBackground(DARKGRAY);
     EntitySystem_Draw(es);
     EndDrawing();

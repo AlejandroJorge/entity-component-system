@@ -5,8 +5,8 @@
 
 typedef struct {
   unsigned int ID;
-  Component UComponents[CT_TOTAL_UCOMPONENT_TYPES];
-  Component DComponents[CT_TOTAL_DCOMPONENT_TYPES];
+  Component UComponents[UCT_TOTAL_UCOMPONENT_TYPES];
+  Component DComponents[DCT_TOTAL_DCOMPONENT_TYPES];
 } Entity;
 
 Entity *Entity_Create();
