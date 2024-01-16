@@ -9,6 +9,8 @@
  * [TODO] Entity ID assignment
  * */
 
+EntitySystem entitySystem;
+
 Entity *Entity_Create() {
   Entity *e = MemAlloc(sizeof(Entity));
   for (UComponentType i = 0; i < UCT_TOTAL_UCOMPONENT_TYPES; i++) {
@@ -46,6 +48,13 @@ void Entity_Update(Entity *e) {
       break;
     case UCT_SIZE:
       UC_Size_Update(e);
+      break;
+    case UCT_MOVEMENT:
+      UC_Movement_Update(e);
+      break;
+    case UCT_PLAYERCONTROLLABLE:
+      UC_PlayerControllable_Update(e);
+      break;
     case UCT_TOTAL_UCOMPONENT_TYPES:
       break;
     }
@@ -57,37 +66,38 @@ void Entity_Draw(Entity *e) {
     case DCT_RECTANGLE_SHAPE:
       DC_RectangleShape_Draw(e);
       break;
+    case DCT_SHADOW:
+      DC_Shadow_Draw(e);
+      break;
     case DCT_TOTAL_DCOMPONENT_TYPES:
       break;
     }
   }
 }
 
-EntitySystem *EntitySystem_Create() {
-  EntitySystem *es = MemAlloc(sizeof(EntitySystem));
-  es->entities = NULL;
-  es->amount_entities = 0;
-  es->capacity_entities = 0;
-
-  return es;
+void EntitySystem_Init() {
+  entitySystem.entities = NULL;
+  entitySystem.amount_entities = 0;
+  entitySystem.capacity_entities = 0;
 }
 #define JUMPSIZE 5
-void EntitySystem_AppendEntity(EntitySystem *es, Entity *e) {
-  if (es->amount_entities == es->capacity_entities) {
-    es->entities = MemRealloc(
-        es->entities, sizeof(Component) * (es->capacity_entities + JUMPSIZE));
-    es->capacity_entities += JUMPSIZE;
+void EntitySystem_AppendEntity(Entity *e) {
+  if (entitySystem.amount_entities == entitySystem.capacity_entities) {
+    entitySystem.entities = MemRealloc(
+        entitySystem.entities,
+        sizeof(Component) * (entitySystem.capacity_entities + JUMPSIZE));
+    entitySystem.capacity_entities += JUMPSIZE;
   }
-  es->entities[es->amount_entities] = e;
-  es->amount_entities++;
+  entitySystem.entities[entitySystem.amount_entities] = e;
+  entitySystem.amount_entities++;
 }
-void EntitySystem_Update(EntitySystem *es) {
-  for (unsigned int i = 0; i < es->amount_entities; i++) {
-    Entity_Update(es->entities[i]);
+void EntitySystem_Update() {
+  for (unsigned int i = 0; i < entitySystem.amount_entities; i++) {
+    Entity_Update(entitySystem.entities[i]);
   }
 }
-void EntitySystem_Draw(EntitySystem *es) {
-  for (unsigned int i = 0; i < es->amount_entities; i++) {
-    Entity_Draw(es->entities[i]);
+void EntitySystem_Draw() {
+  for (unsigned int i = 0; i < entitySystem.amount_entities; i++) {
+    Entity_Draw(entitySystem.entities[i]);
   }
 }

@@ -21,9 +21,11 @@ typedef struct {
   unsigned int capacity_entities;
 } EntitySystem;
 
-EntitySystem *EntitySystem_Create();
-void EntitySystem_AppendEntity(EntitySystem *es, Entity *e);
-void EntitySystem_Update(EntitySystem *es);
-void EntitySystem_Draw(EntitySystem *es);
+void EntitySystem_Init();
+void EntitySystem_AppendEntity(Entity *e);
+void EntitySystem_Update();
+void EntitySystem_Draw();
+
+extern EntitySystem entitySystem;
 
 #endif // ENTITY_H
