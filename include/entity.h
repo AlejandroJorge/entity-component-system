@@ -1,10 +1,7 @@
 #ifndef ENTITY_H
 #define ENTITY_H
 
-typedef enum { CT_TOTAL_UCOMPONENT_TYPES } UComponentType;
-typedef enum { CT_TOTAL_DCOMPONENT_TYPES } DComponentType;
-
-typedef void *Component;
+#include "component_types.h"
 
 typedef struct {
   unsigned int ID;
@@ -19,7 +16,7 @@ void Entity_Update(Entity *e);
 void Entity_Draw(Entity *e);
 
 typedef struct {
-  Entity *entities;
+  Entity **entities;
   unsigned int amount_entities;
   unsigned int capacity_entities;
 } EntitySystem;
