@@ -66,7 +66,7 @@ void UC_PlayerControllable_Update(Entity *e) {
       movementComp == NULL)
     return;
 
-#define MOVEMENTFREQ 30
+#define MOVEMENTFREQ 5
   if (playerControllableComp->counter >= MOVEMENTFREQ) {
     playerControllableComp->counter = 0;
     playerControllableComp->state = PCS_IDLE;
@@ -87,16 +87,16 @@ void UC_PlayerControllable_Update(Entity *e) {
     break;
 #define MOVESPEED 5
   case PCS_LEFT:
-    movementComp->velocity.x = MOVESPEED * -1;
-    break;
-  case PCS_RIGHT:
     movementComp->velocity.x = MOVESPEED;
     break;
+  case PCS_RIGHT:
+    movementComp->velocity.x = MOVESPEED * -1;
+    break;
   case PCS_UP:
-    movementComp->velocity.y = MOVESPEED * -1;
+    movementComp->velocity.y = MOVESPEED;
     break;
   case PCS_DOWN:
-    movementComp->velocity.y = MOVESPEED;
+    movementComp->velocity.y = MOVESPEED * -1;
     break;
   }
 

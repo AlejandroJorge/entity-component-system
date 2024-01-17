@@ -4,11 +4,11 @@
 #include <raylib.h>
 #include <stdlib.h>
 
-void MockEntitySystem() {
+void AddMockComponent(float x, float y) {
   Entity *mockEntity = Entity_Create();
-  UC_Position *positionComponent = UC_Position_Create((Vector2){150, 50});
+  UC_Position *positionComponent = UC_Position_Create((Vector2){x, y});
   Entity_AppendUComponent(mockEntity, positionComponent, UCT_POSITION);
-  UC_Size *sizeComponent = UC_Size_Create((Vector2){200, 200});
+  UC_Size *sizeComponent = UC_Size_Create((Vector2){40, 40});
   Entity_AppendUComponent(mockEntity, sizeComponent, UCT_SIZE);
   DC_RectangleShape *rectangleShapeComponent = DC_RectangleShape_Create(BLUE);
   Entity_AppendDComponent(mockEntity, rectangleShapeComponent,
@@ -29,15 +29,19 @@ int main(int argc, char *argv[]) {
 
   InitWindow(800, 600, "ECS in C");
   EntitySystem_Init();
-  MockEntitySystem();
 
   SetTargetFPS(60);
   while (!WindowShouldClose()) {
     EntitySystem_Update();
+
+    if (IsKeyDown(KEY_SPACE)) {
+      AddMockComponent(380, 280);
+    }
+
     BeginDrawing();
-    DrawFPS(15, 15);
     ClearBackground(DARKGRAY);
     EntitySystem_Draw();
+    DrawFPS(15, 15);
     EndDrawing();
   }
 
