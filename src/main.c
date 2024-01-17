@@ -4,12 +4,11 @@
 #include <raylib.h>
 #include <stdlib.h>
 
-void AddMockComponent(float x, float y) {
+void AddMockComponent() {
   Entity *mockEntity = Entity_Create();
-  UC_Position *positionComponent = UC_Position_Create((Vector2){x, y});
-  Entity_AppendUComponent(mockEntity, positionComponent, UCT_POSITION);
-  UC_Size *sizeComponent = UC_Size_Create((Vector2){40, 40});
-  Entity_AppendUComponent(mockEntity, sizeComponent, UCT_SIZE);
+  UC_Transform *transformComponent =
+      UC_Transform_Create((Vector2){0, 0}, (Vector2){50, 50}, 1);
+  Entity_AppendUComponent(mockEntity, transformComponent, UCT_TRANSFORM);
   DC_RectangleShape *rectangleShapeComponent = DC_RectangleShape_Create(BLUE);
   Entity_AppendDComponent(mockEntity, rectangleShapeComponent,
                           DCT_RECTANGLE_SHAPE);
@@ -35,7 +34,7 @@ int main(int argc, char *argv[]) {
     EntitySystem_Update();
 
     if (IsKeyDown(KEY_SPACE)) {
-      AddMockComponent(380, 280);
+      AddMockComponent();
     }
 
     BeginDrawing();

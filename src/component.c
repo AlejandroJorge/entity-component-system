@@ -8,25 +8,16 @@
 
 // Update components
 
-UC_Position *UC_Position_Create(Vector2 position) {
-  UC_Position *component = MemAlloc(sizeof(UC_Position));
+UC_Transform *UC_Transform_Create(Vector2 position, Vector2 localSize,
+                                  float scale) {
+  UC_Transform *component = MemAlloc(sizeof(UC_Transform));
   component->position = position;
+  component->localSize = localSize;
+  component->scale = scale;
 
   return component;
 }
-void UC_Position_Update(Entity *e) {
-  // Do nothing
-}
-
-UC_Size *UC_Size_Create(Vector2 size) {
-  UC_Size *component = MemAlloc(sizeof(UC_Size));
-  component->size = size;
-
-  return component;
-}
-void UC_Size_Update(Entity *e) {
-  // Do nothing
-}
+void UC_Transform_Update(Entity *e) {} // Does nothing on update
 
 UC_Movement *UC_Movement_Create() {
   UC_Movement *component = MemAlloc(sizeof(UC_Movement));
@@ -38,13 +29,13 @@ UC_Movement *UC_Movement_Create() {
 void UC_Movement_Update(Entity *e) {
   // Check requirements
   UC_Movement *movementComp = e->UComponents[UCT_MOVEMENT];
-  UC_Position *positionComp = e->UComponents[UCT_POSITION];
-  if (movementComp == NULL || positionComp == NULL)
+  UC_Transform *transformComp = e->UComponents[UCT_TRANSFORM];
+  if (movementComp == NULL || transformComp == NULL)
     return;
 
   float deltaTime = GetFrameTime();
-  positionComp->position =
-      Vector2Add(movementComp->velocity, positionComp->position);
+  transformComp->position =
+      Vector2Add(movementComp->velocity, transformComp->position);
   movementComp->velocity =
       Vector2Add(movementComp->acceleration, movementComp->velocity);
 }
@@ -60,9 +51,9 @@ void UC_PlayerControllable_Update(Entity *e) {
   // Check requirements
   UC_PlayerControllable *playerControllableComp =
       e->UComponents[UCT_PLAYERCONTROLLABLE];
-  UC_Position *positionComp = e->UComponents[UCT_POSITION];
+  UC_Transform *transformComp = e->UComponents[UCT_TRANSFORM];
   UC_Movement *movementComp = e->UComponents[UCT_MOVEMENT];
-  if (playerControllableComp == NULL || positionComp == NULL ||
+  if (playerControllableComp == NULL || transformComp == NULL ||
       movementComp == NULL)
     return;
 
@@ -115,12 +106,12 @@ DC_RectangleShape *DC_RectangleShape_Create(Color color) {
 void DC_RectangleShape_Draw(Entity *e) {
   // Check required components
   DC_RectangleShape *rectangleShapeComp = e->DComponents[DCT_RECTANGLE_SHAPE];
-  UC_Position *positionComp = e->UComponents[UCT_POSITION];
-  UC_Size *sizeComp = e->UComponents[UCT_SIZE];
-  if (rectangleShapeComp == NULL || positionComp == NULL || sizeComp == NULL)
+  UC_Transform *transformComp = e->UComponents[UCT_TRANSFORM];
+  if (rectangleShapeComp == NULL || transformComp == NULL)
     return;
 
-  DrawRectangleV(positionComp->position, sizeComp->size,
+  DrawRectangleV(transformComp->position,
+                 Vector2Scale(transformComp->localSize, transformComp->scale),
                  rectangleShapeComp->color);
 }
 
@@ -135,13 +126,11 @@ void DC_Shadow_Draw(Entity *e) {
   // Check required components
   DC_Shadow *shadowComp = e->DComponents[DCT_SHADOW];
   DC_RectangleShape *rectangleShapeComp = e->DComponents[DCT_RECTANGLE_SHAPE];
-  UC_Position *positionComp = e->UComponents[UCT_POSITION];
-  UC_Size *sizeComp = e->UComponents[UCT_SIZE];
-  if (shadowComp == NULL || rectangleShapeComp == NULL ||
-      positionComp == NULL || sizeComp == NULL)
+  UC_Transform *transformComp = e->UComponents[UCT_TRANSFORM];
+  if (shadowComp == NULL || rectangleShapeComp == NULL || transformComp == NULL)
     return;
 
-  Vector2 shadowPosition = {positionComp->position.x - shadowComp->size.x,
-                            positionComp->position.y + shadowComp->size.y};
-  DrawRectangleV(shadowPosition, sizeComp->size, shadowComp->color);
+  Vector2 shadowPosition = {transformComp->position.x - shadowComp->size.x,
+                            transformComp->position.y + shadowComp->size.y};
+  DrawRectangleV(shadowPosition, transformComp->localSize, shadowComp->color);
 }

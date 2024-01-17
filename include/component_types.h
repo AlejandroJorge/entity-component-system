@@ -4,8 +4,7 @@
 typedef void *Component;
 
 typedef enum {
-  UCT_POSITION,
-  UCT_SIZE,
+  UCT_TRANSFORM,
   UCT_MOVEMENT,
   UCT_PLAYERCONTROLLABLE,
   UCT_TOTAL_UCOMPONENT_TYPES

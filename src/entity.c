@@ -43,11 +43,8 @@ void Entity_AppendDComponent(Entity *e, Component c, DComponentType t) {
 void Entity_Update(Entity *e) {
   for (UComponentType i = 0; i < UCT_TOTAL_UCOMPONENT_TYPES; i++) {
     switch (i) {
-    case UCT_POSITION:
-      UC_Position_Update(e);
-      break;
-    case UCT_SIZE:
-      UC_Size_Update(e);
+    case UCT_TRANSFORM:
+      UC_Transform_Update(e);
       break;
     case UCT_MOVEMENT:
       UC_Movement_Update(e);

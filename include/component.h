@@ -10,17 +10,13 @@
 
 typedef struct {
   Vector2 position;
-} UC_Position;
+  Vector2 localSize;
+  float scale;
+} UC_Transform;
 
-UC_Position *UC_Position_Create(Vector2 position);
-void UC_Position_Update(Entity *e);
-
-typedef struct {
-  Vector2 size;
-} UC_Size;
-
-UC_Size *UC_Size_Create(Vector2 size);
-void UC_Size_Update(Entity *e);
+UC_Transform *UC_Transform_Create(Vector2 position, Vector2 localSize,
+                                  float scale);
+void UC_Transform_Update(Entity *e);
 
 typedef struct {
   Vector2 velocity;
